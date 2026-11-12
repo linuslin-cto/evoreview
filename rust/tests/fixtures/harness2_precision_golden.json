@@ -1,0 +1,81 @@
+{
+  "description": "Harness² precision_score / simulate_probe / partial-compose 回归夹具（低锚定·高 spam）",
+  "cases": [
+    {
+      "name": "high_spam_unanchored",
+      "comments": [
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false},
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false},
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false},
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false}
+      ],
+      "expect": {
+        "findings": 4,
+        "anchored": 0,
+        "duplicates": 3,
+        "anchored_rate": 0.0,
+        "spam_rate": 0.75,
+        "precision_score": 23.5
+      }
+    },
+    {
+      "name": "well_anchored",
+      "comments": [
+        {"path": "a.py", "severity": "high", "content": "null deref", "start_line": 10, "filtered": false},
+        {"path": "a.py", "severity": "high", "content": "error handle", "start_line": 20, "filtered": false}
+      ],
+      "expect": {
+        "findings": 2,
+        "anchored": 2,
+        "duplicates": 0,
+        "anchored_rate": 1.0,
+        "spam_rate": 0.0,
+        "precision_score": 86.0
+      }
+    },
+    {
+      "name": "mixed_low_anchor",
+      "comments": [
+        {"path": "b.py", "severity": "high", "content": "leak", "start_line": 5, "filtered": false},
+        {"path": "b.py", "severity": "low", "content": "style", "start_line": 0, "filtered": false},
+        {"path": "b.py", "severity": "low", "content": "style", "start_line": 0, "filtered": false},
+        {"path": "b.py", "severity": "medium", "content": "todo", "start_line": 0, "filtered": false}
+      ],
+      "expect": {
+        "findings": 4,
+        "anchored": 1,
+        "duplicates": 1,
+        "anchored_rate": 0.25,
+        "spam_rate": 0.25,
+        "precision_score": 62.5
+      }
+    },
+    {
+      "name": "simulate_precision_filters_unanchored",
+      "comments": [
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false},
+        {"path": "a.py", "severity": "critical", "content": "bad", "start_line": 0, "filtered": false},
+        {"path": "a.py", "severity": "high", "content": "real", "start_line": 12, "filtered": false}
+      ],
+      "harness": {
+        "precision_mode": true,
+        "min_severity": "low",
+        "focus_categories": []
+      },
+      "expect_after_simulate": {
+        "findings": 1,
+        "anchored": 1,
+        "anchored_rate": 1.0,
+        "spam_rate": 0.0,
+        "precision_score": 86.0
+      }
+    },
+    {
+      "name": "compose_spam_vs_anchored",
+      "base": "high_spam_unanchored",
+      "candidate": "well_anchored",
+      "expect_adopted": true,
+      "expect_candidate_beats_base_by": 0.5
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[package]
+name = "xiezhi-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Xiezhi local Diff CLI (xiezhi / xz)"
+rust-version.workspace = true
+
+[[bin]]
+name = "xiezhi"
+path = "src/main.rs"
+
+[dependencies]
+xiezhi-core = { workspace = true }
+xiezhi-scr = { workspace = true }
+xiezhi-review = { workspace = true }
+xiezhi-llm = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
+dotenvy = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+regex = { workspace = true }
+url = "2"
+urlencoding = "2"
+mysql = "25"
+rpassword = "7"

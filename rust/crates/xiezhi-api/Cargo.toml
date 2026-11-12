@@ -1,0 +1,34 @@
+[package]
+name = "xiezhi-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "HTTP API routes for Xiezhi webhook service"
+rust-version.workspace = true
+
+[dependencies]
+xiezhi-core = { workspace = true }
+xiezhi-platforms = { workspace = true }
+xiezhi-review = { workspace = true }
+xiezhi-llm = { workspace = true }
+xiezhi-scr = { workspace = true }
+axum = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+tower-http = { version = "0.6", features = ["fs"] }
+url = "2"
+chrono = { workspace = true }
+hmac = "0.12"
+sha2 = "0.10"
+hex = "0.4"
+base64 = "0.22"
+rusqlite = { version = "0.32", features = ["bundled"] }
+reqwest = { workspace = true }
+async-trait = "0.1"
+
+[dev-dependencies]
+http-body-util = "0.1"
+tower = { version = "0.5", features = ["util"] }

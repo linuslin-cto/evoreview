@@ -1,0 +1,65 @@
+{
+  "source": "biz/review/scoring.py + biz/scr/anchor.py",
+  "scoring_cases": [
+    {
+      "name": "empty",
+      "score": 100,
+      "grade": "优秀"
+    },
+    {
+      "name": "critical_security",
+      "score": 35,
+      "grade": "需改进"
+    },
+    {
+      "name": "low_style",
+      "score": 98,
+      "grade": "优秀"
+    },
+    {
+      "name": "filtered",
+      "score": 100
+    },
+    {
+      "name": "spam",
+      "score_one": 71,
+      "score_five": 63
+    },
+    {
+      "name": "unified",
+      "score": 89
+    },
+    {
+      "name": "multi_file",
+      "score": 74,
+      "grade": "及格"
+    },
+    {
+      "name": "unanchored",
+      "score": 86
+    }
+  ],
+  "anchor": {
+    "diff": "@@ -1,2 +1,3 @@\n keep\n+fn bad() {}\n keep2\n",
+    "existing_code": "fn bad() {}",
+    "start_line": 2,
+    "end_line": 2,
+    "line_map": [
+      [
+        1,
+        "keep",
+        false
+      ],
+      [
+        2,
+        "fn bad() {}",
+        true
+      ],
+      [
+        3,
+        "keep2",
+        false
+      ]
+    ]
+  }
+}

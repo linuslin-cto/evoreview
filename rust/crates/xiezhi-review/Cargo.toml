@@ -1,0 +1,27 @@
+[package]
+name = "xiezhi-review"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Fusion review pipeline: SCR + narrative compose"
+rust-version.workspace = true
+
+[dependencies]
+xiezhi-core = { workspace = true }
+xiezhi-scr = { workspace = true }
+xiezhi-llm = { workspace = true }
+async-trait = "0.1"
+regex = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+url = "2"
+
+[dev-dependencies]
+serde_json = { workspace = true }
+tokio = { workspace = true }

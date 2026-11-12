@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xiezhi:1.5.5
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+    volumes:
+      - ./data:/app/data
+      - ./log:/app/log
+    env_file:
+      - ./conf/.env
+    restart: unless-stopped
+
+  # Rust 后端 + Next.js：docker compose --profile rust up -d --build
+  rust-app:
+    profiles: ["rust"]
+    build:
+      context: .
+      dockerfile: Dockerfile.rust
+    image: xiezhi-rust:1.5.5
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+    volumes:
+      - ./data:/app/data
+      - ./log:/app/log
+      - ./conf/.env:/app/conf/.env:ro
+    env_file:
+      - ./conf/.env
+    environment:
+      SERVER_PORT: "5001"
+      XIEZHI_DB_FILE: /app/data/data.db
+      RUST_LOG: info
+    restart: unless-stopped

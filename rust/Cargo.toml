@@ -1,0 +1,55 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/xiezhi-core",
+    "crates/xiezhi-scr",
+    "crates/xiezhi-review",
+    "crates/xiezhi-llm",
+    "crates/xiezhi-platforms",
+    "crates/xiezhi-api",
+    "crates/xiezhi-cli",
+    "crates/xiezhi-server",
+]
+default-members = [
+    "crates/xiezhi-core",
+    "crates/xiezhi-scr",
+    "crates/xiezhi-review",
+    "crates/xiezhi-cli",
+    "crates/xiezhi-server",
+]
+
+[workspace.package]
+version = "1.5.5"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["Xiezhi"]
+repository = "https://github.com/xiezhi-ai/xiezhi"
+rust-version = "1.80"
+
+[workspace.dependencies]
+xiezhi-core = { path = "crates/xiezhi-core" }
+xiezhi-scr = { path = "crates/xiezhi-scr" }
+xiezhi-review = { path = "crates/xiezhi-review" }
+xiezhi-llm = { path = "crates/xiezhi-llm" }
+xiezhi-platforms = { path = "crates/xiezhi-platforms" }
+xiezhi-api = { path = "crates/xiezhi-api" }
+anyhow = "1"
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+regex = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "fs", "process", "io-util", "net", "sync", "time"] }
+axum = "0.8"
+clap = { version = "4", features = ["derive", "env"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+dotenvy = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+serde_yaml = "0.9"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

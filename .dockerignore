@@ -1,0 +1,37 @@
+.git
+.gitignore
+.cursor
+.loop
+.venv
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.coverage
+htmlcov
+
+data
+log
+conf/.env
+dist
+build
+tmp
+*.egg-info
+docs
+*.md
+*.log
+.DS_Store
+
+web/node_modules
+web/.next
+web/.env*
+node_modules
+
+# Rust 本地构建产物勿进构建上下文
+rust/target
+**/target
+
+# 运行所需静态资源与 SCR 资产（含 .md 规则/Prompt）
+!assets
+!assets/**
+!conf/scr
+!conf/scr/**

@@ -1,0 +1,73 @@
+# 獬豸 Rust 运行时镜像（多阶段）：Next.js 前端 + xiezhi-server / xiezhi CLI
+# 构建：docker build -f Dockerfile.rust -t xiezhi-rust:1.5.5 .
+# Compose：docker compose --profile rust up -d --build
+
+# ---- Frontend build ----
+FROM node:22-bookworm-slim AS web-build
+WORKDIR /web
+COPY web/package.json web/package-lock.json ./
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm config set fetch-retries 5 \
+    && npm config set fetch-retry-mintimeout 20000 \
+    && npm config set fetch-retry-maxtimeout 120000 \
+    && npm config set fetch-timeout 600000 \
+    && npm ci
+COPY web/ ./
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV API_PROXY_TARGET=http://127.0.0.1:5001
+RUN npm run build
+
+# ---- Rust build ----
+FROM rust:1.85-bookworm AS rust-build
+WORKDIR /src
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# 依赖层缓存：先拷 workspace 清单再拷 crates
+COPY rust/Cargo.toml rust/Cargo.lock ./
+COPY rust/crates ./crates
+ENV CARGO_TERM_COLOR=never
+RUN cargo build --release -p xiezhi-server -p xiezhi-cli \
+    && strip target/release/xiezhi-server target/release/xiezhi
+
+# ---- Runtime ----
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    supervisor \
+    git \
+    ca-certificates \
+    ripgrep \
+    tree \
+    file \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p log data conf bin
+
+COPY --from=rust-build /src/target/release/xiezhi-server /app/bin/xiezhi-server
+COPY --from=rust-build /src/target/release/xiezhi /app/bin/xiezhi
+COPY conf/prompt_templates.yml ./conf/prompt_templates.yml
+COPY conf/scr ./conf/scr
+COPY conf/supervisord.rust.conf /etc/supervisor/conf.d/supervisord.conf
+COPY assets ./assets
+
+COPY --from=web-build /web /app/web
+
+ENV PATH="/app/bin:${PATH}"
+ENV API_PROXY_TARGET=http://127.0.0.1:5001
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV SERVER_PORT=5001
+ENV XIEZHI_DB_FILE=/app/data/data.db
+ENV RUST_LOG=info
+
+EXPOSE 5001 5002
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

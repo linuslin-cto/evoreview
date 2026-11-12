@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xiezhi"
+version = "1.5.5"
+description = "Xiezhi (獬豸): LLM-powered code review — webhook service + local Diff CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Xiezhi" }]
+keywords = ["code-review", "ai", "gitlab", "scr", "cli"]
+dependencies = [
+  "anthropic>=0.39.0",
+  "Flask>=3.0.3",
+  "APScheduler>=3.10.4",
+  "httpx[socks]",
+  "Jinja2>=3.1.4",
+  "lizard>=1.17.20",
+  "ollama>=0.4.7",
+  "openai>=1.59.3",
+  "pandas>=2.2.3",
+  "pathspec>=0.12.1",
+  "PyMySQL>=1.1.1",
+  "python-dotenv>=1.0.0",
+  "python-gitlab>=5.6.0",
+  "PyYAML>=6.0",
+  "requests>=2.32.3",
+  "tiktoken>=0.9.0",
+  "zhipuai>=2.1.5.20230904",
+]
+
+[project.scripts]
+xiezhi = "biz.cli.main:main"
+xz = "biz.cli.main:main"
+
+[project.urls]
+Documentation = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["biz*"]
+
+[tool.setuptools.package-data]
+biz = ["py.typed"]
