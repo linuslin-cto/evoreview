@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
+  <a href="README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
-  <a href="README.en.md">English</a> ·
   <a href="README.ja.md">日本語</a> ·
-  <a href="README.ko.md">한국어</a>
+  <b>한국어</b>
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ docker compose up -d
 | API | `http://<host>:5001` |
 | Dashboard | `http://<host>:5002` |
 
-영문 README: [README.en.md](./README.en.md) · FAQ: [docs/ko/faq.md](docs/ko/faq.md)
+English README: [README.md](./README.md) · FAQ: [docs/ko/faq.md](docs/ko/faq.md)
 
 ## 라이선스
 

@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
+  <b>English</b> ·
   <a href="README.zh-CN.md">简体中文</a> ·
-  <a href="README.en.md">English</a> ·
   <a href="README.ja.md">日本語</a> ·
   <a href="README.ko.md">한국어</a>
 </p>
@@ -23,28 +23,29 @@
   <a href="rust/README.md"><img alt="Rust" src="https://img.shields.io/badge/Rust-optional%20runtime-orange.svg" /></a>
 </p>
 
-## 一句话
+## Overview
 
-**EvoReview** 是面向 GitLab / GitHub / Gitea 的**自进化** AI 代码审查系统：Webhook 自动审查 + 评论回写 + IM 通知 + Dashboard + 本地 CLI。  
-与「每次裸调 LLM」不同——**模型权重不变，审查 harness 会进化**（提示叠加、精度偏置、课程库），按锚定率 / 噪音率等对比指标越跑越准。
+**EvoReview** is an open-source **self-evolving** AI code review system for GitLab, GitHub, and Gitea. It reviews Push / MR·PR changes via webhooks, posts comments back to the platform, notifies IM channels, and ships a dashboard plus local CLI.
 
-产品介绍：[INTRODUCTION.md](./INTRODUCTION.md) · 品牌：[BRANDING.md](./BRANDING.md) · 自进化：[rust/HARNESS2.md](./rust/HARNESS2.md)
+The differentiator is **Harness²**: model weights stay fixed; the *execution harness* (prompt overlays, precision bias, lesson library) improves from contrast metrics — anchor rate, spam rate, severity balance — so reviews get sharper over time.
 
-## 核心能力
+Start with [INTRODUCTION.md](./INTRODUCTION.md), [BRANDING.md](./BRANDING.md), and [rust/HARNESS2.md](./rust/HARNESS2.md).
 
-| 能力 | 说明 |
-|------|------|
-| **Harness² 自进化** | Propose → Probe → Compose；可按文件部分采纳；Improvement library |
-| 多模型 | DeepSeek、智谱、OpenAI、Anthropic、通义千问、Ollama |
-| 多平台 Webhook | GitLab / GitHub / Gitea |
-| IM 推送 | 钉钉、企业微信、飞书 |
-| Dashboard | 审查日志与统计（默认 `:5002`） |
-| 审查风格 | professional / sarcastic / gentle / humorous |
-| 融合审查 | SCR 结构化审查（逐文件、行级锚定、事实过滤）+ 可选叙述总览 |
-| Agentic（可选） | 工具探索仓库；失败自动降级 |
-| 本地 CLI | 提交前自审 |
+## Features
 
-## 快速开始
+| Feature | Description |
+|---------|-------------|
+| **Harness² self-evolution** | Propose → Probe → Compose; per-file partial adopt; improvement library |
+| Multi-LLM | DeepSeek, ZhipuAI, OpenAI, Anthropic, Qwen, Ollama |
+| Multi-platform webhooks | GitLab / GitHub / Gitea |
+| IM notifications | DingTalk, WeCom, Feishu |
+| Dashboard | Review logs & stats (default `:5002`) |
+| Review styles | professional / sarcastic / gentle / humorous |
+| Fusion review | SCR (per-file, line anchors, fact filter) + optional narrative |
+| Agentic (optional) | Tool-based repo exploration with auto-fallback |
+| Local CLI | Pre-push self-review |
+
+## Quick start
 
 ### Docker
 
@@ -52,16 +53,16 @@
 git clone https://github.com/linuslin-cto/evoreview.git
 cd evoreview
 cp conf/.env.dist conf/.env
-# 编辑 conf/.env：LLM、Git Token、SUPPORTED_EXTENSIONS 等
+# Edit conf/.env: LLM keys, Git token, SUPPORTED_EXTENSIONS, ...
 docker compose up -d
 ```
 
-| 服务 | 地址 |
-|------|------|
+| Service | URL |
+|---------|-----|
 | API | `http://<host>:5001` |
 | Dashboard | `http://<host>:5002` |
 
-### 本地运行
+### Local
 
 ```bash
 python -m venv .venv
@@ -74,9 +75,9 @@ python api.py                          # :5001
 cd web && npm install && npm run dev   # :5002
 ```
 
-Dashboard 账号：`DASHBOARD_USER` / `DASHBOARD_PASSWORD`（`conf/.env.dist` 默认 `admin` / `admin`）。
+Dashboard credentials: `DASHBOARD_USER` / `DASHBOARD_PASSWORD` (defaults in `conf/.env.dist`: `admin` / `admin`).
 
-### 最小配置
+### Minimal config
 
 ```bash
 LLM_PROVIDER=deepseek
@@ -86,44 +87,44 @@ GITLAB_ACCESS_TOKEN=your_token
 HARNESS2_ENABLED=1
 ```
 
-完整项见 `conf/.env.dist`。
+See `conf/.env.dist` for the full list.
 
-### 启用自进化
+### Enable self-evolution
 
 ```bash
 HARNESS2_ENABLED=1
-# 可选：HARNESS2_DUAL_PROBE=1   # 候选 harness 二次 SCR（成本更高）
-# 可选：HARNESS2_PROPOSE_LLM=1  # 用 LLM 精炼 harness 提案
+# optional: HARNESS2_DUAL_PROBE=1   # second SCR for candidate harness
+# optional: HARNESS2_PROPOSE_LLM=1  # LLM-refined harness proposals
 ```
 
-## 接入 Webhook
+## Webhooks
 
-1. 创建平台 Access Token。
-2. 配置 Webhook：`http://<host>:5001/review/webhook`
-3. 勾选 Push / Merge Request（或 Pull Request）事件。
+1. Create a platform access token.
+2. Point the webhook to `http://<host>:5001/review/webhook`.
+3. Enable Push and Merge/Pull Request events.
 
-GitHub / Gitea / IM 细节见 [docs/zh-CN/faq.md](docs/zh-CN/faq.md)。
+GitHub / Gitea / IM setup: [docs/en/faq.md](docs/en/faq.md).
 
-## 本地 CLI
+## Local CLI
 
 ```bash
 pip install -e .
-# 安装后使用项目 CLI 入口（见 docs/zh-CN/cli.md）
+# See docs/en/cli.md for commands
 ```
 
-## 文档
+## Documentation
 
-| 文档 | 内容 |
-|------|------|
-| [INTRODUCTION.md](./INTRODUCTION.md) | 产品介绍 |
-| [BRANDING.md](./BRANDING.md) | 品牌与文案 |
-| [rust/HARNESS2.md](./rust/HARNESS2.md) | 自进化机制 |
-| [docs/zh-CN/faq.md](docs/zh-CN/faq.md) | 常见问题 |
-| [docs/zh-CN/cli.md](docs/zh-CN/cli.md) | 本地 CLI |
+| Doc | Description |
+|-----|-------------|
+| [INTRODUCTION.md](./INTRODUCTION.md) | Product intro |
+| [BRANDING.md](./BRANDING.md) | Brand & copy |
+| [rust/HARNESS2.md](./rust/HARNESS2.md) | Self-evolution |
+| [docs/en/faq.md](docs/en/faq.md) | FAQ |
+| [docs/en/cli.md](docs/en/cli.md) | Local CLI |
 | [web/README.md](web/README.md) | Dashboard |
 
-多语种索引：[docs/README.md](docs/README.md)。
+Other languages: [docs/README.md](docs/README.md).
 
-## 贡献与许可
+## Contributing & license
 
-欢迎 Issue / PR。采用 [Apache License 2.0](LICENSE)。
+Issues and PRs welcome. Licensed under [Apache License 2.0](LICENSE).

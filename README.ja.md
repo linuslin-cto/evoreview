@@ -10,9 +10,9 @@
 </p>
 
 <p align="center">
+  <a href="README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
-  <a href="README.en.md">English</a> ·
-  <a href="README.ja.md">日本語</a> ·
+  <b>日本語</b> ·
   <a href="README.ko.md">한국어</a>
 </p>
 
@@ -56,7 +56,7 @@ docker compose up -d
 | API | `http://<host>:5001` |
 | Dashboard | `http://<host>:5002` |
 
-英語 README: [README.en.md](./README.en.md) · FAQ: [docs/ja/faq.md](docs/ja/faq.md)
+English README: [README.md](./README.md) · FAQ: [docs/ja/faq.md](docs/ja/faq.md)
 
 ## ライセンス
 

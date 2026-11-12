@@ -27,4 +27,4 @@ pwsh ../scripts/rust-verify.ps1
 ## Docs
 
 - Self-evolution: [HARNESS2.md](./HARNESS2.md)
-- Product: [../INTRODUCTION.md](../INTRODUCTION.md) · [../README.en.md](../README.en.md)
+- Product: [../INTRODUCTION.md](../INTRODUCTION.md) · [../README.md](../README.md)

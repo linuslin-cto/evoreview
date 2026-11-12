@@ -21,7 +21,7 @@ Teams that want fewer false positives and sharper findings over time — without
 
 ## Start here
 
-- Product README: [README.en.md](./README.en.md) · [README.zh-CN.md](./README.zh-CN.md)
+- Product README: [README.md](./README.md) (English) · [README.zh-CN.md](./README.zh-CN.md)
 - Brand: [BRANDING.md](./BRANDING.md)
 - Self-evolution deep dive: [rust/HARNESS2.md](./rust/HARNESS2.md)
 - GitHub: https://github.com/linuslin-cto/evoreview
