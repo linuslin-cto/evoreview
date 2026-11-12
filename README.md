@@ -46,12 +46,13 @@
 ### Docker
 
 ```bash
-git clone <your-repo-url> evoreview
+git clone https://github.com/linuslin-cto/evoreview.git
 cd evoreview
 cp conf/.env.dist conf/.env
 # 编辑 conf/.env：LLM、Git Token、SUPPORTED_EXTENSIONS 等
 docker compose up -d
 ```
+
 
 | 服务 | 地址 |
 |------|------|

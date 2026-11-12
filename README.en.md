@@ -46,7 +46,7 @@ What stands out: **Harness² self-evolution** — model weights stay fixed; the 
 ### Docker
 
 ```bash
-git clone <your-repo-url> evoreview
+git clone https://github.com/linuslin-cto/evoreview.git
 cd xiezhi
 cp conf/.env.dist conf/.env
 # Edit conf/.env: LLM keys, Git token, SUPPORTED_EXTENSIONS, ...
