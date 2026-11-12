@@ -1,6 +1,6 @@
-# Xiezhi Dashboard
+# EvoReview Dashboard
 
-Next.js frontend; proxies `/api/*` to the Flask API.
+Next.js frontend; proxies `/api/*` to the EvoReview API.
 
 > Docs: [简体中文](../README.zh-CN.md) · [English](../README.en.md) · [日本語](../README.ja.md) · [한국어](../README.ko.md)
 
@@ -28,9 +28,5 @@ Credentials: `DASHBOARD_USER` / `DASHBOARD_PASSWORD` in `conf/.env`.
 | `/reviews` | Review logs, KPI, charts |
 | `/members` | Member analytics |
 | `/deep` | Deep review body |
-| `/reports` | Reports / summaries |
-| `/system` | Config snapshot & log tail |
-
-## Docker
-
-Built by the root `Dockerfile` multi-stage build and started with the API via supervisord (port **5002**).
+| `/reports` | Reports |
+| `/system` | System info |

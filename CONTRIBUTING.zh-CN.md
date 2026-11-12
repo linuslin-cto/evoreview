@@ -1,18 +1,19 @@
-# 贡献指南
+# 贡献指南 · EvoReview
 
 > [English](CONTRIBUTING.md) · [简体中文](CONTRIBUTING.zh-CN.md)
 
-感谢关注 **獬豸（Xiezhi）**。
+感谢关注 **EvoReview**。
 
 ## 环境
 
 - Python 3.10+
-- Node.js 20+（仅改 Dashboard）
+- Node.js 20+（仅 Dashboard）
 - Git
+- 可选：Rust 工具链
 
 ```bash
-git clone <your-repo-url> xiezhi
-cd xiezhi
+git clone https://github.com/linuslin-cto/evoreview.git
+cd evoreview
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 source .venv/bin/activate
@@ -25,24 +26,25 @@ Dashboard：`cd web && npm install && npm run dev`（同时运行 `python api.py
 
 ## 目录
 
-| 路径 | 说明 |
+| 路径 | 作用 |
 |------|------|
-| `api.py` | Flask 入口 |
+| `api.py` | API 入口 |
 | `biz/` | 审查、平台、CLI、评分 |
-| `conf/` | 环境变量模板、SCR 规则与 Prompt |
+| `conf/` | 环境模板、SCR 规则与提示词 |
 | `web/` | Next.js Dashboard |
-| `docs/` | 多语种用户文档 |
+| `rust/` | 可选 Rust 运行时 + Harness² |
+| `docs/` | 多语种文档 |
 
 ## 提交前
 
-1. 改动保持聚焦。
+1. 变更聚焦，避免无关格式化。
 2. 勿提交密钥（`conf/.env`、`web/.env.local`）。
-3. 冒烟：`xiezhi version`、`xiezhi review --preview`。
+3. 改动 Rust 时优先跑 `pwsh scripts/rust-verify.ps1`。
 
 ## Pull Request
 
-请说明动机、改动与自测方式。标题建议：`fix:` / `feat:` / `docs:`。
+说明动机，关联 Issue，并写明如何验证。
 
-安全问题请按 [SECURITY.zh-CN.md](SECURITY.zh-CN.md) 私下披露。
+## 许可
 
-贡献内容默认按 [Apache License 2.0](LICENSE) 授权。
+贡献内容按 [Apache License 2.0](LICENSE) 授权。
