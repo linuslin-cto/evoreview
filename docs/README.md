@@ -1,6 +1,4 @@
-# Documentation / 文档 / ドキュメント / 문서
-
-Choose your language:
+# EvoReview documentation
 
 | Language | README | FAQ | CLI |
 |----------|--------|-----|-----|
@@ -9,9 +7,9 @@ Choose your language:
 | 日本語 | [README.ja.md](../README.ja.md) | [ja/faq.md](ja/faq.md) | [ja/cli.md](ja/cli.md) |
 | 한국어 | [README.ko.md](../README.ko.md) | [ko/faq.md](ko/faq.md) | [ko/cli.md](ko/cli.md) |
 
-Contributing & security:
+Also see:
 
-- 简体中文: [CONTRIBUTING.zh-CN.md](../CONTRIBUTING.zh-CN.md), [SECURITY.zh-CN.md](../SECURITY.zh-CN.md)
-- English: [CONTRIBUTING.md](../CONTRIBUTING.md), [SECURITY.md](../SECURITY.md)
-
-Dashboard: [web/README.md](../web/README.md)
+- [INTRODUCTION.md](../INTRODUCTION.md) — product intro
+- [BRANDING.md](../BRANDING.md) — brand & copy
+- [rust/HARNESS2.md](../rust/HARNESS2.md) — self-evolution
+- [web/README.md](../web/README.md) — dashboard

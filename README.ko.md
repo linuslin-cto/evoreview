@@ -1,11 +1,12 @@
-# Xiezhi (獬豸)
+# EvoReview
 
 <p align="center">
-  <img src="assets/xiezhi-logo.png" alt="Xiezhi" width="160" />
+  <img src="assets/xiezhi-logo.png" alt="EvoReview" width="160" />
 </p>
 
 <p align="center">
-  <b>LLM 기반 자동 코드 리뷰</b> — Webhook 서비스 + 로컬 CLI
+  <b>자기 진화형 AI 코드 리뷰</b><br/>
+  <i>Reviews that get sharper with every run</i>
 </p>
 
 <p align="center">
@@ -16,97 +17,46 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/linuslin-cto/evoreview"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-evoreview-181717?logo=github" /></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
-  <a href="https://www.python.org/downloads/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-green.svg" /></a>
 </p>
 
 ## 소개
 
-**Xiezhi**는 GitLab / GitHub / Gitea 에서 Push 또는 Merge Request(Pull Request) Webhook 이 발생할 때 변경을 자동 리뷰하고, 결과를 플랫폼 댓글로 남기며 DingTalk / WeCom / Feishu 로 알릴 수 있습니다. 커밋 전 자체 리뷰용 로컬 CLI 도 제공합니다.
+**EvoReview**는 GitLab / GitHub / Gitea를 위한 **자기 진화형** AI 코드 리뷰 오픈소스입니다. Webhook으로 변경을 리뷰하고, 댓글을 되돌리며, IM 알림·대시보드·로컬 CLI를 제공합니다.
+
+핵심은 **Harness²**: 모델 가중치는 고정하고, 실행 harness(프롬프트 오버레이·정밀도 편향·레슨 라이브러리)가 지표로부터 진화해 **실행할수록 더 정확**해집니다.
+
+자세한 내용: [INTRODUCTION.md](./INTRODUCTION.md) · [BRANDING.md](./BRANDING.md) · [rust/HARNESS2.md](./rust/HARNESS2.md)
 
 ## 기능
 
 | 기능 | 설명 |
 |------|------|
-| 다중 LLM | DeepSeek, ZhipuAI, OpenAI, Anthropic, Qwen, Ollama |
-| 다중 플랫폼 | GitLab / GitHub / Gitea |
+| **Harness² 자기 진화** | Propose → Probe → Compose |
+| 멀티 LLM | DeepSeek, ZhipuAI, OpenAI, Anthropic, Qwen, Ollama |
+| 멀티 플랫폼 | GitLab / GitHub / Gitea |
 | IM 알림 | DingTalk, WeCom, Feishu |
-| Dashboard | Next.js 로그·통계 (`:5002`) |
-| 리뷰 스타일 | professional / sarcastic / gentle / humorous |
-| 융합 리뷰 | SCR(Structured Code Review) + 선택적 서술 요약 |
-| Agentic (선택) | 저장소 탐색 도구; 실패 시 자동 폴백 |
-| 로컬 CLI | `xiezhi review` / `xiezhi menu` |
+| Dashboard | 로그·통계 (`:5002`) |
+| 융합 리뷰 | SCR + 선택적 서술 요약 |
+| Agentic (선택) | 저장소 탐색; 실패 시 폴백 |
+| 로컬 CLI | 푸시 전 셀프 리뷰 |
 
 ## 빠른 시작
 
-### Docker
-
 ```bash
-git clone <your-repo-url> xiezhi
-cd xiezhi
+git clone https://github.com/linuslin-cto/evoreview.git
+cd evoreview
 cp conf/.env.dist conf/.env
-# conf/.env 편집
 docker compose up -d
 ```
 
 | 서비스 | URL |
-|--------|-----|
+|---------|-----|
 | API | `http://<host>:5001` |
 | Dashboard | `http://<host>:5002` |
 
-### 로컬
-
-```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp conf/.env.dist conf/.env
-
-python api.py
-cd web && npm install && npm run dev
-```
-
-### 최소 설정
-
-```bash
-LLM_PROVIDER=deepseek
-DEEPSEEK_API_KEY=your_key
-SUPPORTED_EXTENSIONS=.java,.py,.go,.js,.ts,.vue,.yml
-GITLAB_ACCESS_TOKEN=your_token
-```
-
-전체 항목은 `conf/.env.dist` 참고.
-
-## GitLab Webhook
-
-1. Access Token 생성.
-2. Settings → Webhooks:
-   - URL: `http://<host>:5001/review/webhook`
-   - Push / Merge Request Events
-
-FAQ: [docs/ko/faq.md](docs/ko/faq.md)
-
-## 로컬 CLI
-
-```bash
-pip install -e .
-xiezhi config init
-xiezhi review --preview
-xiezhi review
-```
-
-상세: [docs/ko/cli.md](docs/ko/cli.md)
-
-## 문서
-
-| 문서 | 내용 |
-|------|------|
-| [docs/ko/faq.md](docs/ko/faq.md) | FAQ |
-| [docs/ko/cli.md](docs/ko/cli.md) | CLI |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | 기여 가이드 (영어) |
-| [SECURITY.md](SECURITY.md) | 보안 (영어) |
-
-인덱스: [docs/README.md](docs/README.md)
+영문 README: [README.en.md](./README.en.md) · FAQ: [docs/ko/faq.md](docs/ko/faq.md)
 
 ## 라이선스
 

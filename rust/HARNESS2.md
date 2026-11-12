@@ -1,40 +1,36 @@
-# Harness² 自进化审查
+# EvoReview · Harness² self-evolution
 
-模型权重不变；进化对象是**执行 harness**（system overlay、精度偏置、课程库）。  
-流程：`Propose → Probe → Compose`，无真值时用对比指标决定是否采纳。
+EvoReview keeps **model weights fixed**. What evolves is the **execution harness**: system overlays, precision bias, and an improvement (lesson) library.
 
-## 开关
+Pipeline: **Propose → Probe → Compose**. Without ground-truth labels, contrast metrics decide whether to adopt an edit.
 
-| 环境变量 | 默认 | 含义 |
+## Enable
+
+| Env | Default | Meaning |
 |---|---|---|
-| `HARNESS2_ENABLED` | `0` | `1` 时在 `review_fusion` 后跑 PPC；structured 注入 library hints |
-| `HARNESS2_LIBRARY_PATH` | `data/harness2_library.json` | Improvement library 路径 |
-| `HARNESS2_PROPOSE_LLM` | `0` | `1` 时用 LLM 精炼提案（否则纯启发式） |
-| `HARNESS2_DUAL_PROBE` | `0` | `1` 时对候选 harness 再跑一轮 SCR（失败回退 simulate） |
+| `HARNESS2_ENABLED` | `0` | `1` runs PPC after fusion SCR; injects library hints into structured prompts |
+| `HARNESS2_LIBRARY_PATH` | `data/harness2_library.json` | Lesson library path |
+| `HARNESS2_PROPOSE_LLM` | `0` | `1` refines proposals with an LLM (else heuristics) |
+| `HARNESS2_DUAL_PROBE` | `0` | `1` re-runs SCR under the candidate harness (fallback to simulate on failure) |
 
-`HARNESS2_PROPOSE_LLM=1` 时：模型输出经 `parse_edit_json`（去 fence、字段别名、severity 归一）再与启发式 `merge_edit`，半残 JSON 不会冲掉有效约束。
+When `HARNESS2_PROPOSE_LLM=1`, model output is parsed via `parse_edit_json` (fence strip, field aliases, severity normalize) then merged with heuristics via `merge_edit`.
 
-## 指标（`contrast_metrics` / `precision_score`）
+## Metrics
 
-- 锚定率、spam/重复率、严重度分布、发现密度
-- Compose：全局候选分更高则全量采纳；否则按文件 `prefer_file_result`（精度 / 降 spam / 密度 / 严重度校准）部分换入，写入 library lesson
+- Anchor rate, spam/duplicate rate, severity mix, finding density (`contrast_metrics` / `precision_score`)
+- Compose: full adopt if the candidate score wins; otherwise **per-file** `prefer_file_result` / `merge_partial_results`
 
-## 探针策略
+## Probe strategy
 
-默认 `simulate_probe_results`：对已有 SCR 评论做后处理过滤（不二次打 LLM）。  
-`HARNESS2_DUAL_PROBE=1`：把候选 `ExecutionHarness` 写入 `StructuredOptions.harness` 再跑一轮 SCR（探针轮关闭 filter）；失败则回退 simulate。
+- Default: `simulate_probe_results` (post-filter existing SCR comments, no second LLM)
+- Dual probe: set candidate harness on `StructuredOptions.harness` and run SCR again (filter off on the probe pass)
 
-## 代码位置
+## Code
 
-- `xiezhi-review/src/harness2/` — 域模型与 PPC
-- `fusion.rs` — 启用后 post-SCR 编排
-- `structured.rs` — system prompt 叠加 library
+- `rust/crates/xiezhi-review/src/harness2/` — domain + PPC
+- `fusion.rs` — post-SCR orchestration
+- `structured.rs` — system prompt overlays
 
-## 回归夹具
+## Regression fixtures
 
-`rust/tests/fixtures/harness2_precision_golden.json` + `xiezhi-review/tests/golden_harness2_precision.rs`：  
-低锚定 / 高 spam / simulate 后指标 / compose 采纳阈值。
-
-## Loop
-
-状态：`.loop/harness2-state.json`。本地动态 wake：`AGENT_LOOP_WAKE_harness2`。
+`rust/tests/fixtures/harness2_precision_golden.json` + `xiezhi-review/tests/golden_harness2_precision.rs`

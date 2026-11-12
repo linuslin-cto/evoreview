@@ -1,32 +1,30 @@
-# Xiezhi Rust Workspace
+# EvoReview — Rust runtime
 
-Python 系统的渐进式 Rust 重构。当前阶段：**核心域模型 / 评分 / SCR 锚定 / 报告合成 / API·CLI 骨架**，附带自动化测试门禁。
+Optional high-performance Rust workspace for the EvoReview API server and CLI.
 
 ## Crates
 
-| Crate | 职责 |
+| Crate | Role |
 |-------|------|
-| `xiezhi-core` | 模型、实体、统一评分 |
-| `xiezhi-scr` | Diff 拆分、行锚定、规则映射 |
-| `xiezhi-review` | 融合报告合成、webhook 仓库解析 |
-| `xiezhi-llm` | LLM 客户端（骨架） |
-| `xiezhi-platforms` | GitLab/GitHub/Gitea webhook 归一化 |
-| `xiezhi-api` | Axum 路由 |
-| `xiezhi-cli` | `xiezhi` CLI 二进制 |
-| `xiezhi-server` | Webhook API 服务二进制 |
+| `xiezhi-core` | Models & scoring |
+| `xiezhi-scr` | Diff split, anchors, rules |
+| `xiezhi-review` | Fusion review + **Harness²** |
+| `xiezhi-llm` | LLM clients |
+| `xiezhi-platforms` | GitLab / GitHub / Gitea |
+| `xiezhi-api` | Axum HTTP API |
+| `xiezhi-cli` / `xiezhi-server` | Binaries |
 
-## 校验
-
-在 `rust/` 目录：
+## Verify
 
 ```bash
+# from rust/
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
-cargo fmt --all -- --check
+# or
+pwsh ../scripts/rust-verify.ps1
 ```
 
-或运行仓库根目录脚本：`./scripts/rust-verify.sh`（Windows: `pwsh scripts/rust-verify.ps1`）。
+## Docs
 
-## 迁移状态
-
-见 [`RUST_MIGRATION.md`](./RUST_MIGRATION.md)。
+- Self-evolution: [HARNESS2.md](./HARNESS2.md)
+- Product: [../INTRODUCTION.md](../INTRODUCTION.md) · [../README.en.md](../README.en.md)

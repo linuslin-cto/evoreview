@@ -1,11 +1,11 @@
-# EvoReview（獬豸）
+# EvoReview
 
 <p align="center">
   <img src="assets/xiezhi-logo.png" alt="EvoReview" width="160" />
 </p>
 
 <p align="center">
-  <b>Self-evolving AI code review</b> — 自进化审查 · Webhook + 本地 CLI<br/>
+  <b>自进化 AI 代码审查</b><br/>
   <i>Reviews that get sharper with every run</i>
 </p>
 
@@ -17,27 +17,33 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/linuslin-cto/evoreview"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-evoreview-181717?logo=github" /></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
   <a href="https://www.python.org/downloads/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-green.svg" /></a>
 </p>
 
 ## 简介
 
-**EvoReview**（獬豸 / Xiezhi）在 GitLab / GitHub / Gitea 的 Push / MR·PR 上自动审查代码变更，写回平台评论，并可推送到钉钉 / 企业微信 / 飞书；本地 CLI 支持提交前自审。核心差异：**Harness² 自进化**——模型权重不变，执行 harness 随对比指标越跑越准。详见 [BRANDING.md](./BRANDING.md)、[rust/HARNESS2.md](./rust/HARNESS2.md)。
+**EvoReview** 是一个全新的开源项目：面向 GitLab / GitHub / Gitea 的**自进化 AI 代码审查**。  
+Webhook 自动审查、评论回写、IM 通知、Dashboard、本地 CLI 一应俱全。
+
+核心卖点不是「再包一层 LLM」，而是 **Harness²**：模型权重不动，审查 harness（提示叠加、精度偏置、课程库）根据锚定率、噪音率等指标持续进化——**越跑越准**。
+
+详见 [INTRODUCTION.md](./INTRODUCTION.md)、[BRANDING.md](./BRANDING.md)、[rust/HARNESS2.md](./rust/HARNESS2.md)。
 
 ## 功能
 
 | 能力 | 说明 |
 |------|------|
-| **自进化 Harness²** | Propose–Probe–Compose；锚定率 / spam 对比采纳；Improvement library |
+| **Harness² 自进化** | Propose → Probe → Compose；按文件部分采纳；Improvement library |
 | 多模型 | DeepSeek、智谱、OpenAI、Anthropic、通义千问、Ollama |
 | 多平台 Webhook | GitLab / GitHub / Gitea |
 | IM 推送 | 钉钉、企业微信、飞书 |
-| Dashboard | Next.js 审查日志与统计（默认 `:5002`） |
+| Dashboard | 审查日志与统计（默认 `:5002`） |
 | 审查风格 | professional / sarcastic / gentle / humorous |
-| 融合审查 | SCR 结构化代码审查（逐文件、行级锚定、事实校验）+ 可选叙述总览 |
-| Agentic（可选） | 工具探索全仓库；失败自动降级 |
-| 本地 CLI | `xiezhi review` / `xiezhi menu` |
+| 融合审查 | SCR 结构化审查 + 可选叙述总览 |
+| Agentic（可选） | 工具探索仓库；失败自动降级 |
+| 本地 CLI | 提交前自审 |
 
 ## 快速开始
 
@@ -47,10 +53,9 @@
 git clone https://github.com/linuslin-cto/evoreview.git
 cd evoreview
 cp conf/.env.dist conf/.env
-# 编辑 conf/.env：LLM、Git Token、SUPPORTED_EXTENSIONS 等
+# 编辑 conf/.env
 docker compose up -d
 ```
-
 
 | 服务 | 地址 |
 |------|------|
@@ -66,11 +71,9 @@ python -m venv .venv
 pip install -r requirements.txt
 cp conf/.env.dist conf/.env
 
-python api.py                          # :5001
-cd web && npm install && npm run dev   # :5002
+python api.py
+cd web && npm install && npm run dev
 ```
-
-Dashboard 账号见 `DASHBOARD_USER` / `DASHBOARD_PASSWORD`（`conf/.env.dist` 默认 `admin` / `admin`）。
 
 ### 最小配置
 
@@ -79,54 +82,19 @@ LLM_PROVIDER=deepseek
 DEEPSEEK_API_KEY=your_key
 SUPPORTED_EXTENSIONS=.java,.py,.go,.js,.ts,.vue,.yml
 GITLAB_ACCESS_TOKEN=your_token
+HARNESS2_ENABLED=1
 ```
-
-完整项见 `conf/.env.dist`。
-
-## GitLab Webhook
-
-1. 创建 Personal / Project Access Token。
-2. 项目 → Settings → Webhooks：
-   - URL：`http://<host>:5001/review/webhook`
-   - Trigger：Push Events、Merge Request Events
-
-优先使用 `.env` 中的 `GITLAB_ACCESS_TOKEN`。  
-GitHub / Gitea / IM 见 [docs/zh-CN/faq.md](docs/zh-CN/faq.md)。
-
-## 本地 CLI
-
-```bash
-pip install -e .
-xiezhi config init
-xiezhi review --preview
-xiezhi review
-```
-
-详见 [docs/zh-CN/cli.md](docs/zh-CN/cli.md)。
-
-## Agentic Review（可选）
-
-```bash
-REVIEW_STRATEGY=agentic
-REPO_CACHE_DIR=data/repo_cache
-AGENT_MAX_ITERATIONS=20
-```
-
-失败自动降级为 `diff_only`。默认仅允许读类 shell 命令。
 
 ## 文档
 
 | 文档 | 内容 |
 |------|------|
-| [docs/zh-CN/faq.md](docs/zh-CN/faq.md) | 常见问题 |
-| [docs/zh-CN/cli.md](docs/zh-CN/cli.md) | 本地 Diff CLI |
-| [web/README.md](web/README.md) | Dashboard |
-| [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md) | 贡献指南 |
-| [SECURITY.zh-CN.md](SECURITY.zh-CN.md) | 安全政策 |
+| [INTRODUCTION.md](./INTRODUCTION.md) | 产品介绍 |
+| [BRANDING.md](./BRANDING.md) | 品牌文案 |
+| [rust/HARNESS2.md](./rust/HARNESS2.md) | 自进化说明 |
+| [docs/zh-CN/faq.md](docs/zh-CN/faq.md) | FAQ |
+| [docs/zh-CN/cli.md](docs/zh-CN/cli.md) | CLI |
 
-多语种索引：[docs/README.md](docs/README.md)。
+## 许可
 
-## 贡献与许可
-
-欢迎 Issue / PR，见 [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md)。  
-采用 [Apache License 2.0](LICENSE)。
+[Apache License 2.0](LICENSE)

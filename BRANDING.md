@@ -1,30 +1,25 @@
-# EvoReview — brand & positioning
-
-## International name
+# EvoReview brand
 
 | | |
 |---|---|
 | **Product** | **EvoReview** |
-| **Heritage** | 獬豸 / Xiezhi (mythic guardian of justice) |
 | **One-liner** | Self-evolving AI code review |
 | **Tagline** | Reviews that get sharper with every run |
-| **GitHub slug** | `evoreview` |
+| **Repo** | [github.com/linuslin-cto/evoreview](https://github.com/linuslin-cto/evoreview) |
 
-## Why this name (marketing)
+## Why the name
 
-1. **Self-evolution first** — `Evo` signals Harness² Propose–Probe–Compose: the *harness* improves (overlays, precision bias, lesson library), not just one-shot LLM calls.
-2. **Star-friendly English** — short, pronounceable, no Chinese literacy required; easy to search and tweet.
-3. **Category clarity** — `Review` lands in the code-review mental model next to bots people already star.
-4. **Brand bridge** — keep 獬豸 / Xiezhi in README subtitle so Chinese community and justice-beast story remain unique.
+1. **Evo** — the review *harness* improves over time (Propose → Probe → Compose), not a one-shot LLM pass.
+2. **Review** — clear category fit for GitHub discovery and stars.
+3. Short, English-first, easy to say and search worldwide.
 
-## Positioning lines (copy kit)
+## Copy kit
 
-- **EN:** EvoReview — self-evolving AI code review for GitLab / GitHub / Gitea.
+- **EN:** EvoReview — self-evolving AI code review for GitLab, GitHub, and Gitea.
 - **EN short:** Self-evolving code review. Less spam, more precision.
-- **ZH:** EvoReview（獬豸）— 自进化 AI 代码审查：越跑越准。
-- **Hook:** Model weights stay put; the *execution harness* evolves from your review metrics.
+- **ZH:** EvoReview — 自进化 AI 代码审查，越跑越准。
+- **Hook:** Model weights stay fixed; the execution harness evolves from live review metrics.
 
-## Visual / social
+## Social
 
-- Prefer logo lockup: **EvoReview** wordmark + small 獬豸 mark.
-- Hashtags: `#EvoReview` `#SelfEvolving` `#CodeReview` `#Harness2` `#Xiezhi`
+- Hashtags: `#EvoReview` `#SelfEvolving` `#CodeReview` `#AICodeReview` `#Harness2`

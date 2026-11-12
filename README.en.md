@@ -1,11 +1,11 @@
-# EvoReview (獬豸 / Xiezhi)
+# EvoReview
 
 <p align="center">
   <img src="assets/xiezhi-logo.png" alt="EvoReview" width="160" />
 </p>
 
 <p align="center">
-  <b>Self-evolving AI code review</b> — Webhook service + local CLI<br/>
+  <b>Self-evolving AI code review</b><br/>
   <i>Reviews that get sharper with every run</i>
 </p>
 
@@ -17,29 +17,33 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/linuslin-cto/evoreview"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-evoreview-181717?logo=github" /></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
   <a href="https://www.python.org/downloads/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-green.svg" /></a>
+  <a href="rust/README.md"><img alt="Rust" src="https://img.shields.io/badge/Rust-optional%20runtime-orange.svg" /></a>
 </p>
 
 ## Overview
 
-**EvoReview** (heritage brand: 獬豸 / Xiezhi) reviews code changes when GitLab / GitHub / Gitea fire Push or Merge Request (Pull Request) webhooks. Results are posted back as platform comments and can be pushed to DingTalk / WeCom / Feishu. A local CLI supports pre-push self-review.
+**EvoReview** is an open-source **self-evolving** AI code review system for GitLab, GitHub, and Gitea. It reviews Push / MR·PR changes via webhooks, posts comments back to the platform, notifies IM channels, and ships a dashboard plus local CLI.
 
-What stands out: **Harness² self-evolution** — model weights stay fixed; the *execution harness* (prompt overlays, precision bias, lesson library) improves from contrast metrics (anchor rate, spam, severity calibration). See [BRANDING.md](./BRANDING.md) and [rust/HARNESS2.md](./rust/HARNESS2.md).
+The differentiator is **Harness²**: model weights stay fixed; the *execution harness* (prompt overlays, precision bias, lesson library) improves from contrast metrics — anchor rate, spam rate, severity balance — so reviews get sharper over time.
+
+Start with [INTRODUCTION.md](./INTRODUCTION.md), [BRANDING.md](./BRANDING.md), and [rust/HARNESS2.md](./rust/HARNESS2.md).
 
 ## Features
 
 | Feature | Description |
 |---------|-------------|
-| **Self-evolving Harness²** | Propose–Probe–Compose; adopt edits by precision metrics; improvement library |
+| **Harness² self-evolution** | Propose → Probe → Compose; per-file partial adopt; improvement library |
 | Multi-LLM | DeepSeek, ZhipuAI, OpenAI, Anthropic, Qwen, Ollama |
 | Multi-platform webhooks | GitLab / GitHub / Gitea |
 | IM notifications | DingTalk, WeCom, Feishu |
-| Dashboard | Next.js review logs & stats (port `:5002`) |
+| Dashboard | Review logs & stats (default `:5002`) |
 | Review styles | professional / sarcastic / gentle / humorous |
-| Fusion review | SCR (Structured Code Review: per-file, line anchors, fact filter) + optional narrative |
-| Agentic (optional) | Tool-based repo exploration; auto-fallback on failure |
-| Local CLI | `xiezhi review` / `xiezhi menu` |
+| Fusion review | SCR (per-file, line anchors, fact filter) + optional narrative |
+| Agentic (optional) | Tool-based repo exploration with auto-fallback |
+| Local CLI | Pre-push self-review |
 
 ## Quick start
 
@@ -47,7 +51,7 @@ What stands out: **Harness² self-evolution** — model weights stay fixed; the 
 
 ```bash
 git clone https://github.com/linuslin-cto/evoreview.git
-cd xiezhi
+cd evoreview
 cp conf/.env.dist conf/.env
 # Edit conf/.env: LLM keys, Git token, SUPPORTED_EXTENSIONS, ...
 docker compose up -d
@@ -80,54 +84,47 @@ LLM_PROVIDER=deepseek
 DEEPSEEK_API_KEY=your_key
 SUPPORTED_EXTENSIONS=.java,.py,.go,.js,.ts,.vue,.yml
 GITLAB_ACCESS_TOKEN=your_token
+HARNESS2_ENABLED=1
 ```
 
 See `conf/.env.dist` for the full list.
 
-## GitLab webhook
+### Enable self-evolution
 
-1. Create a Personal or Project Access Token.
-2. Project → Settings → Webhooks:
-   - URL: `http://<host>:5001/review/webhook`
-   - Triggers: Push Events, Merge Request Events
+```bash
+HARNESS2_ENABLED=1
+# optional: HARNESS2_DUAL_PROBE=1   # second SCR for candidate harness
+# optional: HARNESS2_PROPOSE_LLM=1  # LLM-refined harness proposals
+```
 
-`.env` `GITLAB_ACCESS_TOKEN` takes priority; otherwise the webhook Secret Token may be used.  
-For GitHub / Gitea / IM setup, see [docs/en/faq.md](docs/en/faq.md).
+## Webhooks
+
+1. Create a platform access token.
+2. Point the webhook to `http://<host>:5001/review/webhook`.
+3. Enable Push and Merge/Pull Request events.
+
+GitHub / Gitea / IM setup: [docs/en/faq.md](docs/en/faq.md).
 
 ## Local CLI
 
 ```bash
 pip install -e .
-xiezhi config init
-xiezhi review --preview
-xiezhi review
+# See docs/en/cli.md for commands
 ```
-
-Details: [docs/en/cli.md](docs/en/cli.md).
-
-## Agentic review (optional)
-
-```bash
-REVIEW_STRATEGY=agentic
-REPO_CACHE_DIR=data/repo_cache
-AGENT_MAX_ITERATIONS=20
-```
-
-Failures fall back to `diff_only`. Shell tools are read-only by default (allowlist + path sandbox + timeout).
 
 ## Documentation
 
 | Doc | Description |
 |-----|-------------|
+| [INTRODUCTION.md](./INTRODUCTION.md) | Product intro |
+| [BRANDING.md](./BRANDING.md) | Brand & copy |
+| [rust/HARNESS2.md](./rust/HARNESS2.md) | Self-evolution |
 | [docs/en/faq.md](docs/en/faq.md) | FAQ |
-| [docs/en/cli.md](docs/en/cli.md) | Local Diff CLI |
+| [docs/en/cli.md](docs/en/cli.md) | Local CLI |
 | [web/README.md](web/README.md) | Dashboard |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contributing |
-| [SECURITY.md](SECURITY.md) | Security policy |
 
 Other languages: [docs/README.md](docs/README.md).
 
 ## Contributing & license
 
-Issues and PRs are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).  
-Licensed under [Apache License 2.0](LICENSE).
+Issues and PRs welcome. Licensed under [Apache License 2.0](LICENSE).
